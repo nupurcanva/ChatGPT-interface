@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Icons Example</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="icons.css">
+</head>
+<body style="padding: 20px; background: #212121; color: white;">
+    <h1>Custom Icons Implementation Examples</h1>
+    
+    <h2>Method 1: SVG File Icons</h2>
+    <div style="display: flex; gap: 20px; margin: 20px 0;">
+        <!-- Replace Font Awesome icons with your custom SVG icons -->
+        <button class="chatgpt-home-btn">
+            <span class="custom-icon icon-chatgpt-custom icon-medium"></span>
+            ChatGPT
+        </button>
+        
+        <button class="new-chat-btn">
+            <span class="custom-icon icon-canva-custom icon-medium"></span>
+            New Chat
+        </button>
+    </div>
+    
+    <h2>Method 2: Inline SVG (Exact Reproduction)</h2>
+    <div style="display: flex; gap: 20px; margin: 20px 0;">
+        <!-- Your exact SVG code goes here -->
+        <button class="send-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <!-- Replace with your exact SVG path -->
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
+        
+        <button class="attachment-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <!-- Your custom attachment icon SVG -->
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+        </button>
+    </div>
+    
+    <h2>Method 3: Base64 Encoded Icons</h2>
+    <div style="display: flex; gap: 20px; margin: 20px 0;">
+        <span class="custom-icon icon-base64-example icon-large"></span>
+        <span class="custom-icon icon-inline-svg icon-large"></span>
+    </div>
+    
+    <h2>How to Replace Current Icons</h2>
+    <div style="background: #2d2d2d; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3>Current Font Awesome Icons in Your Code:</h3>
+        <code style="color: #4a9eff;">
+            &lt;i class="fas fa-comment"&gt;&lt;/i&gt; <!-- ChatGPT icon --><br>
+            &lt;i class="fas fa-plus"&gt;&lt;/i&gt; <!-- Plus icon --><br>
+            &lt;i class="fas fa-arrow-up"&gt;&lt;/i&gt; <!-- Send icon --><br>
+            &lt;i class="fas fa-microphone"&gt;&lt;/i&gt; <!-- Voice icon -->
+        </code>
+        
+        <h3 style="margin-top: 20px;">Replace With Your Custom Icons:</h3>
+        <code style="color: #4a9eff;">
+            &lt;span class="custom-icon icon-chatgpt-custom"&gt;&lt;/span&gt;<br>
+            &lt;span class="custom-icon icon-plus-custom"&gt;&lt;/span&gt;<br>
+            &lt;svg&gt;...your exact SVG code...&lt;/svg&gt;<br>
+            &lt;img src="icons/microphone.svg" width="16" height="16"&gt;
+        </code>
+    </div>
+    
+    <h2>Steps to Implement Your Icons:</h2>
+    <ol style="line-height: 1.6;">
+        <li><strong>Provide your icons</strong> - Upload SVG files or paste SVG code</li>
+        <li><strong>Create icons folder</strong> - I'll organize them in an icons/ directory</li>
+        <li><strong>Update CSS</strong> - I'll add your custom icon classes</li>
+        <li><strong>Replace in HTML</strong> - I'll update homepage.html and chat.html</li>
+        <li><strong>Test</strong> - Verify icons display exactly as you intended</li>
+    </ol>
+</body>
+</html> 

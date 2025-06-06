@@ -397,21 +397,10 @@ body {
 .logo-circle {
     width: 64px;
     height: 64px;
-    background: linear-gradient(135deg, #00c4cc, #8b5cf6);
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    color: white;
-    overflow: hidden;
-}
-
-.logo-circle .canva-logo-text {
-    font-size: 12px;
-    font-weight: 600;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    letter-spacing: -0.5px;
 }
 
 .canva-welcome h1 {

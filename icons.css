@@ -1,0 +1,48 @@
+/* Custom Icons for ChatGPT Interface */
+
+/* Method 1: SVG Icons as CSS Classes */
+.custom-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Example custom icons - replace with your SVG files */
+.icon-chatgpt-custom {
+    background-image: url('icons/chatgpt-custom.svg');
+}
+
+.icon-canva-custom {
+    background-image: url('icons/canva-custom.svg');
+}
+
+.icon-send-custom {
+    background-image: url('icons/send-custom.svg');
+}
+
+.icon-attachment-custom {
+    background-image: url('icons/attachment-custom.svg');
+}
+
+/* Method 2: Base64 encoded icons (example) */
+.icon-base64-example {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PC9zdmc+');
+}
+
+/* Method 3: Inline SVG as background */
+.icon-inline-svg {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>');
+}
+
+/* Sizes for different use cases */
+.icon-small { width: 16px; height: 16px; }
+.icon-medium { width: 24px; height: 24px; }
+.icon-large { width: 32px; height: 32px; }
+
+/* Color customization for SVG icons */
+.icon-white { filter: brightness(0) invert(1); }
+.icon-gray { filter: brightness(0.7); }
+.icon-blue { filter: hue-rotate(200deg); } 
