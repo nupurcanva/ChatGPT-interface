@@ -155,47 +155,159 @@
     </div>
     
     <script>
-        // Function to generate appropriate response based on user input
-        function generateResponse(userMessage) {
-            const lowerMessage = userMessage.toLowerCase();
-            
-            if (lowerMessage.includes('csv') || lowerMessage.includes('data') || lowerMessage.includes('product')) {
-                return `
-                    <p>Hello! Excited to bring your visions to life? Start your creative journey with Canva. What will we design together today?</p>
-                    <p><strong>You've asked for: Product social media posts from CSV data.</strong></p>
-                    <p>I can help you transform your product data into stunning social media designs! Please paste your CSV data or describe the columns you have (like product name, price, description, image URLs). I'll automatically map this to design templates like product cards, carousel posts, or promotional graphics.</p>
-                    <p>I can create up to 2 custom designs for you right here in our chat. For bulk creation or advanced editing, I'll guide you to complete the full project in Canva.</p>
-                `;
-            } else if (lowerMessage.includes('quote') || lowerMessage.includes('inspirational')) {
-                return `
-                    <p>Perfect! I'd love to help you create an inspirational quote graphic for social media.</p>
-                    <p><strong>You've asked for: Inspirational quote graphic for social media.</strong></p>
-                    <p>I can design beautiful quote posts with custom typography, backgrounds, and layouts. Please share the quote you'd like to feature, or I can suggest some inspiring options. What theme or mood are you going for?</p>
-                    <p>I can create up to 2 design variations for you right here. For additional customization options, I'll guide you to complete the design in Canva.</p>
-                `;
-            } else if (lowerMessage.includes('poster') || lowerMessage.includes('sale') || lowerMessage.includes('promotion')) {
-                return `
-                    <p>Great choice! Let's create an eye-catching promotional poster for your business.</p>
-                    <p><strong>You've asked for: Promotional poster design.</strong></p>
-                    <p>I can help you design compelling sale posters with attention-grabbing layouts. Please share details about your promotion - what products/services, discount percentage, sale dates, and your brand colors or style preferences.</p>
-                    <p>I can generate up to 2 poster designs for you in our chat. For bulk variations or advanced editing, I'll show you how to continue in Canva.</p>
-                `;
-            } else if (lowerMessage.includes('instagram') || lowerMessage.includes('facebook') || lowerMessage.includes('social media')) {
-                return `
-                    <p>Excellent! Social media posts are perfect for engaging your audience.</p>
-                    <p><strong>You've asked for: Social media post design.</strong></p>
-                    <p>I can create stunning posts optimized for different platforms. Tell me more about your content - is it for a business, personal brand, or specific campaign? What's the main message or theme you want to convey?</p>
-                    <p>I can design up to 2 post variations for you here. For creating multiple posts or platform-specific sizes, I'll help you expand your project in Canva.</p>
-                `;
-            } else {
-                return `
-                    <p>Hello! Excited to bring your visions to life? Start your creative journey with Canva. What will we design together today?</p>
-                    <p><strong>You've asked for: ${userMessage}</strong></p>
-                    <p>I can help you create amazing designs for any purpose! Whether it's social media posts, presentations, logos, flyers, or any other visual content, I'm here to assist.</p>
-                    <p>Please share more details about what you'd like to create, and I'll provide specific guidance and generate designs for you. I can create up to 2 custom designs right here in our chat!</p>
-                `;
+        let conversationStep = 0;
+        
+        // Pre-defined conversation flow
+        const conversation = [
+            {
+                user: `<div class="uploaded-image">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=200&fit=crop&crop=center" alt="Uploaded product image" style="max-width: 200px; border-radius: 8px; margin-bottom: 10px;">
+                    <p>Create a 5-second video with this image. Please keep it on brand.</p>
+                </div>`,
+                assistant: `<p>I'd love to help you create a 5-second video that stays true to your brand! To make sure I design the perfect video for you, I need a few details:</p>
+                
+                <div style="margin: 20px 0;">
+                    <p><strong>Style Preference:</strong></p>
+                    <div style="display: flex; gap: 10px; margin: 10px 0;">
+                        <button class="style-option" onclick="selectStyle('professional')" style="background: #2d2d2d; color: white; border: 1px solid #555; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Professional</button>
+                        <button class="style-option" onclick="selectStyle('casual')" style="background: #2d2d2d; color: white; border: 1px solid #555; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Casual</button>
+                    </div>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <p><strong>Video Format:</strong></p>
+                    <div style="display: flex; gap: 10px; margin: 10px 0;">
+                        <button class="format-option" onclick="selectFormat('tiktok')" style="background: #2d2d2d; color: white; border: 1px solid #555; padding: 8px 16px; border-radius: 6px; cursor: pointer;">TikTok (9:16)</button>
+                        <button class="format-option" onclick="selectFormat('instagram')" style="background: #2d2d2d; color: white; border: 1px solid #555; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Instagram Square</button>
+                        <button class="format-option" onclick="selectFormat('youtube')" style="background: #2d2d2d; color: white; border: 1px solid #555; padding: 8px 16px; border-radius: 6px; cursor: pointer;">YouTube (16:9)</button>
+                    </div>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <p><strong>Choose Your Brand Kit:</strong></p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0;">
+                        <div class="brand-kit" onclick="selectBrandKit('modern')" style="border: 2px solid #444; border-radius: 8px; padding: 15px; cursor: pointer; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <h4 style="margin: 0 0 8px 0; color: white;">Modern Gradient</h4>
+                            <p style="margin: 0; font-size: 12px; color: #f0f0f0;">Purple & Blue tones</p>
+                        </div>
+                        <div class="brand-kit" onclick="selectBrandKit('minimal')" style="border: 2px solid #444; border-radius: 8px; padding: 15px; cursor: pointer; background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+                            <h4 style="margin: 0 0 8px 0; color: white;">Minimal Dark</h4>
+                            <p style="margin: 0; font-size: 12px; color: #f0f0f0;">Clean & Professional</p>
+                        </div>
+                        <div class="brand-kit" onclick="selectBrandKit('vibrant')" style="border: 2px solid #444; border-radius: 8px; padding: 15px; cursor: pointer; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <h4 style="margin: 0 0 8px 0; color: white;">Vibrant Pop</h4>
+                            <p style="margin: 0; font-size: 12px; color: #f0f0f0;">Pink & Orange energy</p>
+                        </div>
+                        <div class="brand-kit" onclick="selectBrandKit('nature')" style="border: 2px solid #444; border-radius: 8px; padding: 15px; cursor: pointer; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                            <h4 style="margin: 0 0 8px 0; color: white;">Nature Fresh</h4>
+                            <p style="margin: 0; font-size: 12px; color: #f0f0f0;">Green & Teal vibes</p>
+                        </div>
+                    </div>
+                </div>`
+            },
+            {
+                user: "Professional, TikTok video, and I'll go with the Modern Gradient brand kit.",
+                assistant: `<p>Perfect choice! I've created a professional TikTok video using your image with the Modern Gradient brand kit. Here's your design:</p>
+
+                <div style="background: #2d2d2d; border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <h3 style="color: #ffffff; margin: 0 0 15px 0;">✨ Product Showcase TikTok Video</h3>
+                    
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 20px; aspect-ratio: 9/16; max-width: 200px; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=150&h=100&fit=crop&crop=center" alt="Product" style="border-radius: 8px; margin-bottom: 15px; max-width: 80%; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                                <div style="text-align: center; color: white;">
+                                    <h4 style="margin: 0 0 5px 0; font-size: 14px;">Premium Quality</h4>
+                                    <p style="margin: 0; font-size: 12px; opacity: 0.9;">Discover Excellence</p>
+                                </div>
+                                <div style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 12px; font-size: 10px; color: white;">5s</div>
+                            </div>
+                        </div>
+                        
+                        <div style="flex: 2; color: #ffffff;">
+                            <div style="margin-bottom: 15px;">
+                                <p style="margin: 0 0 5px 0; color: #aaaaaa; font-size: 14px;">Format:</p>
+                                <p style="margin: 0; font-size: 16px;">TikTok Vertical (1080x1920)</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <p style="margin: 0 0 5px 0; color: #aaaaaa; font-size: 14px;">Duration:</p>
+                                <p style="margin: 0; font-size: 16px;">5 seconds</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <p style="margin: 0 0 5px 0; color: #aaaaaa; font-size: 14px;">Brand Kit:</p>
+                                <p style="margin: 0; font-size: 16px;">Modern Gradient (Purple & Blue)</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <p style="margin: 0 0 5px 0; color: #aaaaaa; font-size: 14px;">Animation:</p>
+                                <p style="margin: 0; font-size: 16px;">Smooth zoom + fade transitions</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #444;">
+                        <button style="background: #7D2AE7; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-right: 10px;">Edit in Canva</button>
+                        <button style="background: transparent; color: #7D2AE7; border: 1px solid #7D2AE7; padding: 10px 20px; border-radius: 6px; cursor: pointer;">Download Video</button>
+                    </div>
+                </div>
+
+                <p>Your video features smooth animations with your product image as the hero element, overlaid with elegant text using the Modern Gradient color scheme. The professional style includes subtle motion graphics and clean typography perfect for TikTok engagement!</p>`
+            },
+            {
+                user: "Can you edit this design to use darker and more autumnal colors?",
+                assistant: `<p>Absolutely! I've updated your design with a rich, darker autumnal palette. Here's the refined version:</p>
+
+                <div style="background: #2d2d2d; border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <h3 style="color: #ffffff; margin: 0 0 15px 0;">🍂 Autumn Collection TikTok Video</h3>
+                    
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <div style="background: linear-gradient(135deg, #8B4513 0%, #A0522D 25%, #CD853F 75%, #D2691E 100%); border-radius: 12px; padding: 20px; aspect-ratio: 9/16; max-width: 200px; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=150&h=100&fit=crop&crop=center" alt="Product" style="border-radius: 8px; margin-bottom: 15px; max-width: 80%; box-shadow: 0 4px 15px rgba(0,0,0,0.4); filter: sepia(20%) saturate(1.2);">
+                                <div style="text-align: center; color: #FFF8DC;">
+                                    <h4 style="margin: 0 0 5px 0; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Autumn Essence</h4>
+                                    <p style="margin: 0; font-size: 12px; opacity: 0.9;">Embrace the Season</p>
+                                </div>
+                                <div style="position: absolute; top: 10px; right: 10px; background: rgba(139, 69, 19, 0.8); padding: 4px 8px; border-radius: 12px; font-size: 10px; color: #FFF8DC;">5s</div>
+                                <div style="position: absolute; bottom: 20px; left: 15px; font-size: 20px;">🍂</div>
+                                <div style="position: absolute; top: 40px; left: 15px; font-size: 16px; opacity: 0.7;">🍁</div>
+                            </div>
+                        </div>
+                        
+                        <div style="flex: 2; color: #ffffff;">
+                            <div style="margin-bottom: 15px;">
+                                <p style="margin: 0 0 5px 0; color: #aaaaaa; font-size: 14px;">Color Palette:</p>
+                                <p style="margin: 0; font-size: 16px;">Rich Autumn (Burnt Orange, Deep Brown, Golden)</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <p style="margin: 0 0 5px 0; color: #aaaaaa; font-size: 14px;">Theme:</p>
+                                <p style="margin: 0; font-size: 16px;">Seasonal & Warm</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <p style="margin: 0 0 5px 0; color: #aaaaaa; font-size: 14px;">Enhanced Elements:</p>
+                                <p style="margin: 0; font-size: 16px;">Autumn leaf graphics, warm filter</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <p style="margin: 0 0 5px 0; color: #aaaaaa; font-size: 14px;">Text Color:</p>
+                                <p style="margin: 0; font-size: 16px;">Cream (#FFF8DC) for warmth</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #444;">
+                        <button style="background: #D2691E; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-right: 10px;">Edit in Canva</button>
+                        <button style="background: transparent; color: #D2691E; border: 1px solid #D2691E; padding: 10px 20px; border-radius: 6px; cursor: pointer;">Download Video</button>
+                    </div>
+                </div>
+
+                <p>Perfect! Your video now features a sophisticated autumnal color scheme with rich browns, burnt oranges, and golden tones. I've added subtle leaf graphics and applied a warm filter to your product image to complement the seasonal theme. The darker palette creates a cozy, premium feel perfect for fall campaigns!</p>`
             }
-        }
+        ];
 
         // Function to add a message to the chat
         function addMessage(message, isUser = false) {
@@ -206,7 +318,7 @@
             if (isUser) {
                 messageDiv.innerHTML = `
                     <div class="message-content">
-                        <p>${message}</p>
+                        ${message}
                     </div>
                 `;
             } else {
@@ -228,18 +340,69 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        // Function to send a new message from the chat input
+        // Interactive functions for brand kit selection
+        let selectedStyle = '';
+        let selectedFormat = '';
+        let selectedBrandKit = '';
+
+        function selectStyle(style) {
+            selectedStyle = style;
+            // Update button appearance
+            document.querySelectorAll('.style-option').forEach(btn => {
+                btn.style.background = '#2d2d2d';
+                btn.style.border = '1px solid #555';
+            });
+            event.target.style.background = '#7D2AE7';
+            event.target.style.border = '1px solid #7D2AE7';
+        }
+
+        function selectFormat(format) {
+            selectedFormat = format;
+            // Update button appearance
+            document.querySelectorAll('.format-option').forEach(btn => {
+                btn.style.background = '#2d2d2d';
+                btn.style.border = '1px solid #555';
+            });
+            event.target.style.background = '#7D2AE7';
+            event.target.style.border = '1px solid #7D2AE7';
+        }
+
+        function selectBrandKit(kit) {
+            selectedBrandKit = kit;
+            // Update selected brand kit appearance
+            document.querySelectorAll('.brand-kit').forEach(elem => {
+                elem.style.border = '2px solid #444';
+            });
+            event.target.style.border = '2px solid #7D2AE7';
+            
+            // Automatically proceed to next step if all selections made
+            if (selectedStyle && selectedFormat && selectedBrandKit) {
+                setTimeout(() => {
+                    addMessage(conversation[1].user, true);
+                    setTimeout(() => {
+                        addMessage(conversation[1].assistant, false);
+                        conversationStep = 2;
+                    }, 1000);
+                }, 500);
+            }
+        }
+
+        // Function to continue conversation
         function sendMessage() {
             const chatInput = document.getElementById('chatInput');
             const message = chatInput.value.trim();
             
-            if (message) {
+            if (message && conversationStep < conversation.length) {
                 // Add user message
                 addMessage(message, true);
                 
-                // Generate and add assistant response
-                const response = generateResponse(message);
-                addMessage(response, false);
+                // Add corresponding assistant response
+                if (conversationStep < conversation.length) {
+                    setTimeout(() => {
+                        addMessage(conversation[conversationStep].assistant, false);
+                        conversationStep++;
+                    }, 1000);
+                }
                 
                 // Clear input
                 chatInput.value = '';
@@ -259,25 +422,18 @@
             }
         }
 
-        // Initialize the chat page
+        // Initialize the chat page with the conversation
         document.addEventListener('DOMContentLoaded', function() {
             const chatInput = document.getElementById('chatInput');
-            const sendBtn = document.querySelector('.send-btn');
-
-            // Get the message from homepage
-            const userMessage = sessionStorage.getItem('userMessage');
             
-            if (userMessage) {
-                // Add the user message
-                addMessage(userMessage, true);
-                
-                // Generate and add assistant response
-                const response = generateResponse(userMessage);
-                addMessage(response, false);
-                
-                // Clear the stored message
-                sessionStorage.removeItem('userMessage');
-            }
+            // Start the conversation automatically
+            setTimeout(() => {
+                addMessage(conversation[0].user, true);
+                setTimeout(() => {
+                    addMessage(conversation[0].assistant, false);
+                    conversationStep = 1;
+                }, 1500);
+            }, 500);
 
             // Handle input changes
             chatInput.addEventListener('input', updateSendButton);
@@ -291,7 +447,6 @@
 
             // Initialize send button state
             updateSendButton();
-            chatInput.focus();
         });
     </script>
 </body>
